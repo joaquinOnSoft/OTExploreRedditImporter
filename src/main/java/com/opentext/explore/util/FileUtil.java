@@ -1,7 +1,12 @@
 package com.opentext.explore.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.Properties;
 
 public class FileUtil {
 	/**
@@ -42,5 +47,26 @@ public class FileUtil {
 		
 		return deleted;
 	
+	}
+	
+	public static Properties loadProperties(String propFileName) {
+		Properties prop = null;
+		
+		File propFile = FileUtil.getFileFromResources(propFileName); 
+
+		InputStream file;
+		try {
+			file = new FileInputStream(propFile.getAbsolutePath());
+			prop = new Properties();
+			prop.load(file);
+		} 
+		catch (FileNotFoundException e) {
+			System.err.println("Properties file not found");
+		}
+		catch (IOException e) {
+			System.err.println("Properties file: " + e.getMessage());
+		}
+		
+		return prop;
 	}
 }

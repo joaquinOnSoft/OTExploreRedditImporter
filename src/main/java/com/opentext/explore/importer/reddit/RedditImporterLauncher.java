@@ -1,4 +1,4 @@
-package com.opentext.explore.importer;
+package com.opentext.explore.importer.reddit;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;

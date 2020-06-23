@@ -3,6 +3,7 @@ package com.opentext.explore.util;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Properties;
 
 import org.junit.Test;
 
@@ -45,5 +46,13 @@ public class TestFileUtil extends TestCase {
 		}
 		
 		assertFalse(FileUtil.isFile(cwd));
+	}
+	
+	@Test
+	public void testLoadProperties() {
+		Properties prop = FileUtil.loadProperties("reddit.properties");
+		
+		assertNotNull(prop);
+		assertNotNull(prop.get("username"));
 	}
 }
