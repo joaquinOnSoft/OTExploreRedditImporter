@@ -1,0 +1,33 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+java {
+	version = '20.2' 
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    // Use jcenter for resolving dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+}
+
+dependencies {
+	// https://mvnrepository.com/artifact/org.jdom/jdom
+	implementation 'org.jdom:jdom:2.0.0'
+
+	// https://mvnrepository.com/artifact/commons-cli/commons-cli
+	implementation 'commons-cli:commons-cli:1.4' 
+	
+	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
+	implementation 'org.apache.logging.log4j:log4j-api:2.13.3'	
+	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+	implementation 'org.apache.logging.log4j:log4j-core:2.13.3'
+	
+	implementation 'net.dean.jraw:JRAW:1.1.0'
+	
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'		
+}
