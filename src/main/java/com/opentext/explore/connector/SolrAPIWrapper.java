@@ -25,7 +25,7 @@ public class SolrAPIWrapper extends AbstractAPIWrapper{
 	private static final String METHOD_OTCA_BATCH_UPDATE = "/solr/interaction/otcaBatchUpdate";
 
 	public SolrAPIWrapper() {
-		this.urlBase = "http://localhost:8983";
+		this("http://localhost:8983");
 	}
 	
 	

@@ -34,7 +34,8 @@ import net.dean.jraw.references.SubredditReference;
 public class RedditImporter {
 
 	private RedditClient reddit;
-	private String itag = null;
+
+	/** Solr URL (this Solr instance is used by Explore) */
 	private String host = null; 
 
 	protected static final Logger log = LogManager.getLogger(RedditImporter.class);
@@ -42,11 +43,12 @@ public class RedditImporter {
 	/**
 	 * @see https://mattbdean.gitbooks.io/jraw/quickstart.html
 	 */
-	public RedditImporter() {
+	public RedditImporter(String host) {
+		this.host = host;
+		
 		Properties prop = FileUtil.loadProperties("reddit.properties");
 
 		if(prop != null) {
-			itag = prop.getProperty("itag", "Reddit importer");
 			host = prop.getProperty("host");
 			
 			// Create our credentials
@@ -64,6 +66,9 @@ public class RedditImporter {
 			// Authenticate and get a RedditClient instance
 			reddit = OAuthHelper.automatic(adapter, credentials);
 		}
+		else {
+			log.error("reddit.properties configuration file not found.");	
+		}
 	}
 
 	/**
@@ -72,7 +77,7 @@ public class RedditImporter {
 	 * @see https://mattbdean.gitbooks.io/jraw/basics.html
 	 * @see https://github.com/mattbdean/JRAW/blob/master/exampleScript/src/main/java/net/dean/jraw/example/script/ScriptExample.java
 	 */
-	public void start(String subreddit) {
+	public void start(String subreddit, String itag) {
 		if(reddit != null) {
 			// "Navigate" to the subreddit
 			SubredditReference sr = reddit.subreddit(subreddit);
