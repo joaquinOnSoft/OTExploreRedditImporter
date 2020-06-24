@@ -6,8 +6,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 import java.util.Properties;
+import java.util.Random;
 
+/**
+ * 
+ * @author Joaquín Garzón
+ * @since 20.2 
+ */
 public class FileUtil {
 	/**
 	 * Get file from classpath, resources folder
@@ -68,5 +77,18 @@ public class FileUtil {
 		}
 		
 		return prop;
+	}
+	
+	public static String getRandomFileName(String extension) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");  
+		String strDate = dateFormat.format(GregorianCalendar.getInstance().getTime());
+		
+		int random = new Random().nextInt(10000);  // [0...10000]
+		String strRandom = String.format("%05d", random);
+		
+		String name = strDate + strRandom;
+		name += extension.startsWith(".") ? extension :  "." + extension;
+		
+		return name;
 	}
 }

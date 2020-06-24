@@ -21,6 +21,16 @@ dependencies {
 	// https://mvnrepository.com/artifact/commons-cli/commons-cli
 	implementation 'commons-cli:commons-cli:1.4' 
 	
+	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore
+	implementation 'org.apache.httpcomponents:httpcore:4.4.13'	
+	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+	implementation 'org.apache.httpcomponents:httpclient:4.5.12'	
+	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime
+	implementation 'org.apache.httpcomponents:httpmime:4.5.12'	
+	
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.0'
+		
 	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api
 	implementation 'org.apache.logging.log4j:log4j-api:2.13.3'	
 	// https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
@@ -30,4 +40,15 @@ dependencies {
 	
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'		
+    
+	// https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito2
+	testImplementation 'org.powermock:powermock-api-mockito2:2.0.7'
+	// https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4-rule-agent
+	testImplementation 'org.powermock:powermock-module-junit4-rule-agent:2.0.7'	
+	// https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4-rule
+	testImplementation 'org.powermock:powermock-module-junit4-rule:2.0.7'
+	// https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4
+	testImplementation 'org.powermock:powermock-module-junit4:2.0.7'
+	// https://mvnrepository.com/artifact/org.powermock/powermock-module-testng
+	testImplementation 'org.powermock:powermock-module-testng:2.0.7'	    
 }

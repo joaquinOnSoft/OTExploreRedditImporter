@@ -10,6 +10,11 @@ import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * 
+ * @author Joaquín Garzón
+ * @since 20.2
+ */
 public class RedditImporterLauncher {
 	
 	private static final Logger log = LogManager.getLogger(RedditImporterLauncher.class);

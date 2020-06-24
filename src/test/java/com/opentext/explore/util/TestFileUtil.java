@@ -55,4 +55,12 @@ public class TestFileUtil extends TestCase {
 		assertNotNull(prop);
 		assertNotNull(prop.get("username"));
 	}
+	
+	@Test
+	public void testGetRandomFileName() {
+		String name = FileUtil.getRandomFileName(".xml");
+		
+		assertNotNull(name);
+		assertTrue(name.endsWith(".xml"));
+	}
 }

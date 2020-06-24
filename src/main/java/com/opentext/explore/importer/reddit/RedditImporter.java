@@ -1,7 +1,13 @@
 package com.opentext.explore.importer.reddit;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.opentext.explore.connector.SolrAPIWrapper;
 import com.opentext.explore.util.FileUtil;
 
 import net.dean.jraw.RedditClient;
@@ -28,7 +34,11 @@ import net.dean.jraw.references.SubredditReference;
 public class RedditImporter {
 
 	private RedditClient reddit;
+	private String itag = null;
+	private String host = null; 
 
+	protected static final Logger log = LogManager.getLogger(RedditImporter.class);
+	
 	/**
 	 * @see https://mattbdean.gitbooks.io/jraw/quickstart.html
 	 */
@@ -36,6 +46,9 @@ public class RedditImporter {
 		Properties prop = FileUtil.loadProperties("reddit.properties");
 
 		if(prop != null) {
+			itag = prop.getProperty("itag", "Reddit importer");
+			host = prop.getProperty("host");
+			
 			// Create our credentials
 			Credentials credentials = Credentials.script(
 					prop.getProperty("username"), 
@@ -75,13 +88,36 @@ public class RedditImporter {
 			DefaultPaginator<Submission> paginator = builder.build();
 			// Request the first page
 			Listing<Submission> firstPage = paginator.next();
+			System.out.println("# post: " + firstPage.size());
 
-			for (Submission post : firstPage) {
-				if (post.getDomain().contains("imgur.com")) {
-					System.out.println(String.format("%s (/r/%s, %s points) - %s",
-							post.getTitle(), post.getSubreddit(), post.getScore(), post.getUrl()));
+			
+			String xmlPath = null;
+			String xmlFileName = FileUtil.getRandomFileName(".xml");
+			try {
+				
+				xmlPath = RedditTransformer.submissionsToXMLFile(firstPage, xmlFileName, itag);
+				
+				SolrAPIWrapper wrapper = null;
+				if(host == null)
+					wrapper = new SolrAPIWrapper();
+				else {
+					wrapper = new SolrAPIWrapper(host);
 				}
+				wrapper.otcaBatchUpdate(new File(xmlPath));	
+			} catch (IOException e) {
+				log.error(e.getMessage());
 			}
+			finally {
+				if(xmlPath != null) {
+					FileUtil.deleteFile(xmlPath);	
+				}
+				
+			}			
+			
+			//for (Submission post : firstPage) {				
+			//	System.out.println(String.format("%s (/r/%s, %s points) - %s",
+			//			post.getTitle(), post.getSubreddit(), post.getScore(), post.getUrl()));
+			//}
 		}
 	}
 }
