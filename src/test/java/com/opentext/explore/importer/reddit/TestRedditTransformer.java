@@ -39,7 +39,7 @@ public class TestRedditTransformer extends TestCase {
 			"    <field name=\"permalink\">/r/CanadaPost/comments/h10u12/any_lawyers_here_willing_to_help_the_canadian/</field>\r\n" +
 			"    <field name=\"url\">https://www.reddit.com/r/CanadaPost/comments/h10u12/any_lawyers_here_willing_to_help_the_canadian/</field>\r\n" +
 			"    <field name=\"thumbnail\">self</field>\r\n" +
-			"    <field name=\"itag\">Canada Post</field>\r\n" +
+			"    <field name=\"rtag\">Canada Post</field>\r\n" +
 			"  </doc>\r\n"; 
 	
 	@Before

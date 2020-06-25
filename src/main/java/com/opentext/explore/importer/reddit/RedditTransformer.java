@@ -52,7 +52,7 @@ public class RedditTransformer extends AbstractTransformer {
 				eDoc.addContent(createElementField("url", post.getUrl()));				
 				eDoc.addContent(createElementField("thumbnail", post.getThumbnail()));
 			
-				eDoc.addContent(createElementField("itag", tag));
+				eDoc.addContent(createElementField("rtag", tag));
 
 				root.addContent(eDoc);
 			}

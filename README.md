@@ -73,7 +73,7 @@ D:\Program Files (x86)\OpenText\Explore\Explore.Configuration.xml
 
 #### Reddit DocType
 
-We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.xml in order to identify Twitter as a new input/document type analyzed by Explore:
+We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.xml in order to identify Reddit as a new input/document type analyzed by Explore:
 
 ```xml
   <DocTypes>
@@ -115,10 +115,10 @@ We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.
   </DocTypes>
 ```
 
-![alt text](img/explore-doc-types.png "Twitter doc type")
+![alt text](img/explore-doc-types.png "Reddit doc type")
 
 
-#### Group Twitter
+#### Group Redditt
 
 
 We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in Explore.Configuration.xml in order to identify Reddit submissions as a new group that can be used to filter by:
@@ -189,7 +189,7 @@ We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in Explore
         <Tag>rtag</Tag>
         <ComparatorGroup>string</ComparatorGroup>
         <AssociatedDocTypes>
-          <DocType>Twitter</DocType>
+          <DocType>Reddit</DocType>
         </AssociatedDocTypes>		
       </CriteriaItem>              
 
@@ -246,6 +246,15 @@ We must define new fields to be able to import extra metadata related with each 
 ```
 
 > **NOTE:** Field must be named using lowercase
+
+#### Customize the icon of your Doc Type
+You must copy the Reddit logo, called **explore_custom_icon_reddit_doc_type.png**, from the **img** folder and paste on the **[EXPLORE_HOME]\ExploreWeb\resources\images\icons** of your Explore instance, e.g.
+
+```
+D:\Program Files (x86)\OpenText\Explore\ExploreWeb\resources\images\icons
+```
+
+![alt text](img/explore_custom_icon_reddit_doc_type.png "Custom icon for Reddit document type")
 
 
 ### Applying changes on your instance
