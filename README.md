@@ -180,7 +180,7 @@ We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in Explore
       
       <CriteriaItem parametric="true" groupBy ="alphabetical" numberBuckets="5" advancedSearch="true" >
         <Name>Importer tag</Name>
-        <Tag>itag</Tag>
+        <Tag>rtag</Tag>
         <ComparatorGroup>string</ComparatorGroup>
         <AssociatedDocTypes>
           <DocType>Twitter</DocType>
