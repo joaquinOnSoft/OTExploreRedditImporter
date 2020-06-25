@@ -25,8 +25,8 @@ public class RedditImporterLauncher {
 		Option hostOption = new Option("h", "host", true, "Solr URL. Default value: http://localhost:8983");
 		options.addOption(hostOption);			
 		
-		Option itagOption = new Option("i", "itag", true, "Explore Importer tag. Added to each article importer");
-		options.addOption(itagOption);		
+		Option rtagOption = new Option("r", "rtag", true, "Explore Reddit Importer tag. Added to each article importer");
+		options.addOption(rtagOption);		
 		
 		Option threadOption = new Option("s", "subreddit", true, "Subreddit thread name");
 		threadOption.setRequired(true);
@@ -39,13 +39,13 @@ public class RedditImporterLauncher {
 		try {
 			cmd = parser.parse(options, args);
 
-			String itag = "Reddit";
+			String rtag = "Reddit";
 			String host = "http://localhost:8983";
 			String subreddit = "CanadaPost";
 			
 			
-			if (cmd.hasOption("itag") || cmd.hasOption("i")) {
-				itag = cmd.getOptionValue("itag");
+			if (cmd.hasOption("rtag") || cmd.hasOption("r")) {
+				rtag = cmd.getOptionValue("rtag");
 			}
 
 			if (cmd.hasOption("host") || cmd.hasOption("h")) {
@@ -58,13 +58,13 @@ public class RedditImporterLauncher {
 		
 			
 			RedditImporter importer = new RedditImporter(host);
-			importer.start(subreddit, itag);
+			importer.start(subreddit, rtag);
 			
 		}
 		catch (ParseException e) {
 			log.error(e.getMessage());			
 			
-			formatter.printHelp("java -jar file.jar --itag 'My tag' --subreddit \"Canada Post\"", options);
+			formatter.printHelp("java -jar OTExploreRedditImporter.20.2.jar --rtag \"Reddit Canada Post\" --subreddit CanadaPost", options);
 
 			System.exit(-1);	
 		}
