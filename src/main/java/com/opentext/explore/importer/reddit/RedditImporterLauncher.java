@@ -43,19 +43,19 @@ public class RedditImporterLauncher {
 			String host = "http://localhost:8983";
 			String subreddit = "CanadaPost";
 			
-			for(String arg: args){
-				if (arg.equals("--itag") || arg.equals("-i")) {
-					itag = arg;
-				}
-
-				if (arg.equals("--host") || arg.equals("-h")) {
-					host = arg;
-				}				
-				
-				if (arg.equals("--subreddit") || arg.equals("-s")) {
-					subreddit = cmd.getOptionValue("subreddit");
-				}
+			
+			if (cmd.hasOption("itag") || cmd.hasOption("i")) {
+				itag = cmd.getOptionValue("itag");
 			}
+
+			if (cmd.hasOption("host") || cmd.hasOption("h")) {
+				host = cmd.getOptionValue("host");
+			}				
+			
+			if (cmd.hasOption("subreddit") || cmd.hasOption("s")) {
+				subreddit = cmd.getOptionValue("subreddit");
+			}
+		
 			
 			RedditImporter importer = new RedditImporter(host);
 			importer.start(subreddit, itag);
