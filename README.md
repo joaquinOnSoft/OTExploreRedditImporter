@@ -179,7 +179,7 @@ We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in Explore
       </CriteriaItem>	
       
       <CriteriaItem parametric="true" groupBy ="alphabetical" numberBuckets="5" advancedSearch="true" >
-        <Name>Importer tag</Name>
+        <Name>Reddit Importer tag</Name>
         <Tag>rtag</Tag>
         <ComparatorGroup>string</ComparatorGroup>
         <AssociatedDocTypes>
