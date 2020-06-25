@@ -20,9 +20,18 @@ Reddit uses OAuth2 to authenticate 3rd party apps. The first thing you'll need t
 
 You'll need the client ID and client secret later.
 
-### via reddit.properties
-Standard properties file named **"reddit.properties"**. Place it to either the current directory, root of the CLASSPATH directory.
+## Configuration file: reddit.properties
 
+Configuration file that specifies the credentials to use the Reddit API:
+
+It supports theses properties:
+
+ * **username**: Reddit user name
+ * **password**: Reddit user password
+ * **clientID**: Reddit client unique identifier (Personal use script)
+ * **clientSecret**: Reddit client secret (Secret)
+
+This *reddit.properties** file shows an example: 
 ```
 username=********
 password=********
@@ -30,6 +39,27 @@ clientID=********
 clientSecret=********
 ```
 
+> Place it to either the current directory, root of the CLASSPATH directory.
+
+
+## Command line execution 
+
+This utility is distributed as a runnable .jar file.
+
+These are the accepted parameters:
+
+usage: java -jar OTExploreRedditImporter-20.2.jar
+ * -h, --host			(Optional)		Solr host URL (used by OpenText Explore). Default value: http://localhost:8983
+ * -i, --itag			(Optional)		Explore Importer tag. Added to each article importer. Default value: "Reddit"
+ * -s, --subreddit		(Mandatory)		Subreddit thread name 
+
+### Example of invocation
+
+```
+$ java -jar OTExploreRedditImporter-20.2.jar --subreddit CanadaPost --itag CanadaPost 
+
+$ java -jar OTExploreRedditImporter-20.2.jar --subreddit CanadaPost --itag CanadaPost --host http://localhost:8983
+```
 
 ## Explore configuration
 
