@@ -77,7 +77,9 @@ We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.
 
 ```xml
   <DocTypes>
-    ...  
+  
+    ...
+      
     <DocType>
       <Name>Reddit</Name>
       <GridFields>
@@ -105,7 +107,11 @@ We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.
           <Name>Reddit Importer Tag</Name>
           <Tag>rtag</Tag>
         </Field>
-    <DocType>
+      <GridFields>
+    </DocType>	
+    
+    ...
+    
   </DocTypes>
 ```
 
