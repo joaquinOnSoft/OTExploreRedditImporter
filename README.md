@@ -102,8 +102,8 @@ We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.
           <Tag>thumbnail</Tag>
         </Field>
         <Field column="Source">
-          <Name>Importer Tag</Name>
-          <Tag>itag</Tag>
+          <Name>Reddit Importer Tag</Name>
+          <Tag>rtag</Tag>
         </Field>
     <DocType>
   </DocTypes>
@@ -176,7 +176,16 @@ We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in Explore
         <AssociatedDocTypes>
           <DocType>Reddit</DocType>
         </AssociatedDocTypes>
-      </CriteriaItem>	        
+      </CriteriaItem>	
+      
+      <CriteriaItem parametric="true" groupBy ="alphabetical" numberBuckets="5" advancedSearch="true" >
+        <Name>Importer tag</Name>
+        <Tag>itag</Tag>
+        <ComparatorGroup>string</ComparatorGroup>
+        <AssociatedDocTypes>
+          <DocType>Twitter</DocType>
+        </AssociatedDocTypes>		
+      </CriteriaItem>              
 
     </Group>  
   
@@ -218,13 +227,13 @@ We must define new fields to be able to import extra metadata related with each 
   <field name="url_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
   <copyField source="url" dest="url_search" />
   
-   <field name="thumbnail" type="string" indexed="true" stored="false" docValues="true" />
+  <field name="thumbnail" type="string" indexed="true" stored="false" docValues="true" />
   <field name="thumbnail_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
   <copyField source="thumbnail" dest="thumbnail_search" />   
   
-  <field name="itag" type="string" indexed="true" stored="false" docValues="true" />
-  <field name="itag_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
-  <copyField source="itag" dest="itag_search" />
+  <field name="rtag" type="string" indexed="true" stored="false" docValues="true" />
+  <field name="rtag_search" type="explore_filter_text" indexed="true" stored="false" multiValued="true" />
+  <copyField source="rtag" dest="rtag_search" />
 
 
   <!-- END CUSTOM FIELDS -->
