@@ -199,7 +199,7 @@ We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in Explore
   
   </CriteriaItems>    
 ```
-![alt text](img/explore-groups.png "Twitter groups")
+![alt text](img/explore_groups.png "Reddit group")
 
 ### schema.xml (Solr)
 
