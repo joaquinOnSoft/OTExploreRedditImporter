@@ -31,7 +31,7 @@ It supports theses properties:
  * **clientID**: Reddit client unique identifier (Personal use script)
  * **clientSecret**: Reddit client secret (Secret)
 
-This *reddit.properties** file shows an example: 
+This **reddit.properties** file shows an example: 
 ```
 username=********
 password=********
