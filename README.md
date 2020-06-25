@@ -107,7 +107,7 @@ We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.
           <Name>Reddit Importer Tag</Name>
           <Tag>rtag</Tag>
         </Field>
-      <GridFields>
+      </GridFields>
     </DocType>	
     
     ...
