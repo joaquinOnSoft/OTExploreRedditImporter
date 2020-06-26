@@ -9,13 +9,12 @@ java {
 }
 
 // Include dependent libraries in archive.
-mainClassName = "com.opentext.explore.importer.reddit.RedditImporterLauncher"
-
 jar {
     manifest {
-        attributes 'Implementation-Title': 'OpenText Explore Reddit Importer',  
-        	'Implementation-Version': version,
-        	'Main-Class': 'com.opentext.explore.importer.reddit.RedditImporterLauncher'
+        attributes 'Implementation-Title': 'OpenText Explore Reddit Importer'  
+        attributes 'Implementation-Version': version
+        attributes 'Main-Class': 'com.opentext.explore.importer.reddit.RedditImporterLauncher'
+        attributes 'Class-Path': '.'
     }
  
     from {

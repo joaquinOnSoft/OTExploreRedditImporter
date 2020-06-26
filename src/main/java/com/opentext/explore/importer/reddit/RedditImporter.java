@@ -69,7 +69,11 @@ public class RedditImporter {
 			reddit = OAuthHelper.automatic(adapter, credentials);
 		}
 		else {
-			log.error("reddit.properties configuration file not found.");	
+			log.error("reddit.properties configuration file not found.");
+			
+	        // Get class path by using getProperty static method of System class
+	        String strClassPath = System.getProperty("java.class.path");
+	        log.debug("Classpath is: " + strClassPath);
 		}
 	}
 
