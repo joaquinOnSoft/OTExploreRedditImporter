@@ -12,12 +12,18 @@ import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.Random;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * 
  * @author Joaquín Garzón
  * @since 20.2 
  */
 public class FileUtil {
+	
+	protected static final Logger log = LogManager.getLogger(FileUtil.class);
+	
 	/**
 	 * Get file from classpath, resources folder
 	 * SEE: Java – Read a file from resources folder
@@ -61,16 +67,22 @@ public class FileUtil {
 	public static Properties loadProperties(String propFileName) {
 		Properties prop = null;
 		
+		log.debug("Properties file name: " + propFileName);
 		File propFile = FileUtil.getFileFromResources(propFileName); 
 
 		InputStream file;
 		try {
-			file = new FileInputStream(propFile.getAbsolutePath());
+			log.debug("Absolute path: " + propFile.getAbsolutePath());
+			file = new FileInputStream(propFile);
+			log.debug("File to FileInputStream");
 			prop = new Properties();
+			log.debug("Loading");
 			prop.load(file);
+			log.debug("Loaded");
 		} 
 		catch (FileNotFoundException e) {
 			System.err.println("Properties file not found");
+			e.getSuppressed();
 		}
 		catch (IOException e) {
 			System.err.println("Properties file: " + e.getMessage());
