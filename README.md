@@ -9,11 +9,38 @@ Once the Submission are available in **OpenText Explore** you can create your ow
 
 > [OpenText™ Explore](https://www.opentext.com/products-and-solutions/products/customer-experience-management/contact-center-workforce-optimization/opentext-explore) is a business discovery solution that allows business and call center professionals to view cross-channel interactions collectively for a comprehensive picture of customer behaviors and relationships. 
 
+
+## Command line execution 
+
+This utility is distributed as a runnable .jar file.
+
+These are the accepted parameters:
+
+usage: java -jar OTExploreRedditImporter-20.2.jar
+ * -h, --host			(Optional)		Solr host URL (used by OpenText Explore). Default value: http://localhost:8983
+ * -i, --itag			(Optional)		Explore Importer tag. Added to each article importer. Default value: "Reddit"
+ * -s, --subreddit		(Mandatory)		Subreddit thread name 
+ * -t, --time			(Optional)		Seconds between each call against Reddit API. Default value 60 seconds 
+
+
+### Example of invocation
+
+```
+$ java -jar OTExploreRedditImporter-20.2.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" 
+
+$ java -jar OTExploreRedditImporter-20.2.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" --host http://localhost:8983 
+
+$ java -jar OTExploreRedditImporter-20.2.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" --host http://localhost:8983 --time 300
+```
+
+
 ## Development environment configuration
+
+> The steps includes in this section are only required if you want to compile your own .jar and use your owns Reddit's app credentials, otherwise are not required.
 
 ### Reddit API
 
-#### Create a reddit OAuth2 app
+#### Create a Reddit OAuth2 app
 Reddit uses OAuth2 to authenticate 3rd party apps. The first thing you'll need to do is to register your app [here](https://www.reddit.com/prefs/apps). For the sake of simplicity, let's create a script app.
 
 ![alt text](img/Create_a_reddit_OAuth2_app.png "Create a reddit OAuth2 app")
@@ -32,6 +59,7 @@ It supports theses properties:
  * **clientSecret**: Reddit client secret (Secret)
 
 This **reddit.properties** file shows an example: 
+
 ```
 username=********
 password=********
@@ -42,24 +70,6 @@ clientSecret=********
 > Place it to either the current directory, root of the CLASSPATH directory.
 
 
-## Command line execution 
-
-This utility is distributed as a runnable .jar file.
-
-These are the accepted parameters:
-
-usage: java -jar OTExploreRedditImporter-20.2.jar
- * -h, --host			(Optional)		Solr host URL (used by OpenText Explore). Default value: http://localhost:8983
- * -i, --itag			(Optional)		Explore Importer tag. Added to each article importer. Default value: "Reddit"
- * -s, --subreddit		(Mandatory)		Subreddit thread name 
-
-### Example of invocation
-
-```
-$ java -jar OTExploreRedditImporter-20.2.jar --subreddit CanadaPost --itag CanadaPost 
-
-$ java -jar OTExploreRedditImporter-20.2.jar --subreddit CanadaPost --itag CanadaPost --host http://localhost:8983
-```
 
 ## Explore configuration
 
@@ -73,7 +83,7 @@ D:\Program Files (x86)\OpenText\Explore\Explore.Configuration.xml
 
 #### Reddit DocType
 
-We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.xml in order to identify Reddit as a new input/document type analyzed by Explore:
+We must add a new DocType tag under the **<DocTypes>** in **Explore.Configuration.xml** in order to identify 'Reddit' as a new input/document type analyzed by Explore:
 
 ```xml
   <DocTypes>
@@ -120,8 +130,7 @@ We must add a new DocType tag under the **<DocTypes>** in Explore.Configuration.
 
 #### Group Redditt
 
-
-We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in Explore.Configuration.xml in order to identify Reddit submissions as a new group that can be used to filter by:
+We must add a new **Group** tag under the **<DoCriteriaItemscTypes>** in **Explore.Configuration.xml** in order to identify Reddit submissions as a new group that can be used to filter by:
 
 ```xml
   <!--<CriteriaItem parametric="true" advancedSearch="true" trendWidget="true" autoPopulate="true" reloadUserData="true" groupBy="single" numberBuckets="6">
@@ -209,7 +218,7 @@ The Solr configuration file **schema.xml** is located at **<SOLR_HOME>\solr-7.3.
 D:\SolrCloud\solr-7.3.1\server\solr\configsets\interaction_config
 ```
 
-#### New Twitter fields on Solr
+#### New Reddit fields on Solr
 
 We must define new fields to be able to import extra metadata related with each Reddit submission 
 
@@ -248,7 +257,28 @@ We must define new fields to be able to import extra metadata related with each 
 > **NOTE:** Field must be named using lowercase
 
 #### Customize the icon of your Doc Type
-You must copy the Reddit logo, called **explore_custom_icon_reddit_doc_type.png**, from the **img** folder and paste on the **[EXPLORE_HOME]\ExploreWeb\resources\images\icons** of your Explore instance, e.g.
+
+Each document type defined in Explore has his own icon. All the icons are stored on **[EXPLORE_HOME]\ExploreWeb\resources\images\icons** and follos this pattern:
+
+```
+explore_custom_icon_[DOC_TYPE_NAME_IN_LOWERCASE]_doc_type.png
+```
+
+where:
+
+ * explore_custom_icon_: Prefix
+ * [[DOC_TYPE_NAME_IN_LOWERCASE]]: Document type name in lowercase
+ * _doc_type.png: Suffix
+ 
+In our example:
+
+```
+icn_multichannel_reddit_16.png
+```
+
+> A 32x32 pixel image is recommended. 
+
+You must copy the Reddit logo, called **icn_multichannel_reddit_16.png**, from the **img** folder in this project and paste on the **[[EXPLORE_HOME]]\ExploreWeb\resources\images\icons** of your Explore instance, e.g.
 
 ```
 D:\Program Files (x86)\OpenText\Explore\ExploreWeb\resources\images\icons
@@ -261,7 +291,7 @@ D:\Program Files (x86)\OpenText\Explore\ExploreWeb\resources\images\icons
 
 Once you have modified **Explore.Configuration.xml** and **schema.xml** files you must follow these steps:
 
- - Execute this command from a terminal/console as administrator:
+ - Execute this command from a terminal/console as Administrator:
 
 ```
 d:> cd d:\SolrCloud\solr-7.3.1\bin
@@ -282,28 +312,31 @@ http://localhost:8983/solr/admin/collections?action=RELOAD&name=interaction&wt=x
 ```
 c:> iisreset
 ```
+
 Once the configuration has been updated Explore will look like this:
 
 ![alt text](img/explore-doc-types-and-extra-fields-in-group.png "Explore Doc types and extra fields in group")
 
 ### Create a new Project in Explore
 
-In o
+In order to manage content from different client in the same instance in a demo environment you can create projects that keep together the info for each client. 
+
+Follow this steps:
 
  - Open your Explore instance.
  - Click on **Administer** in the top menu.
  - Click on **Projects**
  - Click on **New** (+ icon)
- - Set the **Project name**: Madrid
+ - Set the **Project name**: CanadianPost
  
  ![alt text](img/explore-new-project.png "Explore New Project")
  
  - Click on **Search Criteria**
  - Provide the required fields:
     - Search expression: *
-    - Types:  Twitter
+    - Types:  Reddit
     - Include results that have "all" of the followings:
-       - Imported tag: is Ayto. Madrid 
+       - Imported tag: is Reddit Canada Post 
  
  ![alt text](img/explore-project-filter.png "Explore Select criteria on Project")
  
