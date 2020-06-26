@@ -41,6 +41,16 @@ public class FileUtil {
 
     }	
 	
+	public static InputStream getStreamFromResources(String fileName) {
+        InputStream resource = FileUtil.class.getClassLoader().getResourceAsStream(fileName);
+        if (resource == null) {
+            throw new IllegalArgumentException("file is not found!");
+        } else {
+            return resource;
+        }
+
+    }		
+	
 	public static boolean isFile(String path) {
 		boolean isFile = false;
 		
@@ -68,16 +78,12 @@ public class FileUtil {
 		Properties prop = null;
 		
 		log.debug("Properties file name: " + propFileName);
-		File propFile = FileUtil.getFileFromResources(propFileName); 
+		InputStream propFile = FileUtil.getStreamFromResources(propFileName); 
 
-		InputStream file;
 		try {
-			log.debug("Absolute path: " + propFile.getAbsolutePath());
-			file = new FileInputStream(propFile);
-			log.debug("File to FileInputStream");
 			prop = new Properties();
 			log.debug("Loading");
-			prop.load(file);
+			prop.load(propFile);
 			log.debug("Loaded");
 		} 
 		catch (FileNotFoundException e) {
