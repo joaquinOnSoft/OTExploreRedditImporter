@@ -8,6 +8,24 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+// Include dependent libraries in archive.
+mainClassName = "com.opentext.explore.importer.reddit.RedditImporterLauncher"
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'OpenText Explore Reddit Importer',  
+        	'Implementation-Version': version,
+        	'Main-Class': 'com.opentext.explore.importer.reddit.RedditImporterLauncher'
+    }
+ 
+    from {
+        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    
+    //https://discuss.gradle.org/t/generate-runnable-jar-pakage-dependencies/28171
+	exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+}
+
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
