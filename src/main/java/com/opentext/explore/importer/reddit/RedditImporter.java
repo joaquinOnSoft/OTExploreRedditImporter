@@ -33,6 +33,8 @@ import net.dean.jraw.references.SubredditReference;
  */
 public class RedditImporter {
 
+	private static final int MILISECONDS_IN_SECOND = 1000;
+	
 	private RedditClient reddit;
 
 	/** Solr URL (this Solr instance is used by Explore) */
@@ -79,10 +81,20 @@ public class RedditImporter {
 	 */
 	public void start(String subreddit, String itag, int pool) {
 		if(reddit != null) {
-			Listing<Submission> firstPage = readSubreddit(subreddit);
-
-			
-			solrBatchUpdate(itag, firstPage);			
+			do {
+				Listing<Submission> firstPage = readSubreddit(subreddit);
+	
+				if (firstPage != null && firstPage.size() > 0) {
+					solrBatchUpdate(itag, firstPage);					
+				}
+				
+				try {
+					Thread.sleep(30 * MILISECONDS_IN_SECOND);
+				} catch (InterruptedException e) {
+					log.warn(e.getMessage());
+					System.exit(-1);
+				}
+			}while(true);
 		}
 	}
 
