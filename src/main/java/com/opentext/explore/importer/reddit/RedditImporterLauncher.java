@@ -32,6 +32,9 @@ public class RedditImporterLauncher {
 		threadOption.setRequired(true);
 		options.addOption(threadOption);
 		
+		Option poolOption = new Option("p", "pool", true, "Seconds between each call against Reddit API");
+		options.addOption(poolOption);		
+		
 		CommandLineParser parser = new DefaultParser();
 		HelpFormatter formatter = new HelpFormatter();
 		CommandLine cmd = null;
@@ -42,6 +45,7 @@ public class RedditImporterLauncher {
 			String rtag = "Reddit";
 			String host = "http://localhost:8983";
 			String subreddit = "CanadaPost";
+			int pool = 30;
 			
 			
 			if (cmd.hasOption("rtag") || cmd.hasOption("r")) {
@@ -56,17 +60,31 @@ public class RedditImporterLauncher {
 				subreddit = cmd.getOptionValue("subreddit");
 			}
 		
-			
+			if (cmd.hasOption("pool") || cmd.hasOption("p")) {
+				String strPool = cmd.getOptionValue("pool");
+				try {
+					pool = Integer.parseInt(strPool);
+				}
+				catch(NumberFormatException e) {
+					formatter.printHelp("java -jar OTExploreRedditImporter.20.2.jar --rtag \"Reddit Canada Post\" --subreddit CanadaPost", options);
+
+					exitInError(e);
+				}
+			}
+					
 			RedditImporter importer = new RedditImporter(host);
-			importer.start(subreddit, rtag);
+			importer.start(subreddit, rtag, pool);
 			
 		}
 		catch (ParseException e) {
-			log.error(e.getMessage());			
-			
 			formatter.printHelp("java -jar OTExploreRedditImporter.20.2.jar --rtag \"Reddit Canada Post\" --subreddit CanadaPost", options);
 
-			System.exit(-1);	
+			exitInError(e);	
 		}
+	}
+	
+	private static void exitInError(Exception e) {
+		log.error(e.getMessage());
+		System.exit(-1);	
 	}
 }

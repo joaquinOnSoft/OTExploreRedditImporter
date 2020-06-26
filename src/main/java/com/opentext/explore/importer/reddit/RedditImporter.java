@@ -77,52 +77,70 @@ public class RedditImporter {
 	 * @see https://mattbdean.gitbooks.io/jraw/basics.html
 	 * @see https://github.com/mattbdean/JRAW/blob/master/exampleScript/src/main/java/net/dean/jraw/example/script/ScriptExample.java
 	 */
-	public void start(String subreddit, String itag) {
+	public void start(String subreddit, String itag, int pool) {
 		if(reddit != null) {
-			// "Navigate" to the subreddit
-			SubredditReference sr = reddit.subreddit(subreddit);
-
-			// Browse through the top posts of the last month, requesting as much data as possible per request
-			Builder<Submission, SubredditSort> builder = sr.posts();
-
-			builder.limit(Paginator.RECOMMENDED_MAX_LIMIT)
-			.sorting(SubredditSort.TOP)
-			.timePeriod(TimePeriod.MONTH)
-			.build();
-
-			DefaultPaginator<Submission> paginator = builder.build();
-			// Request the first page
-			Listing<Submission> firstPage = paginator.next();
-			System.out.println("# post: " + firstPage.size());
+			Listing<Submission> firstPage = readSubreddit(subreddit);
 
 			
-			String xmlPath = null;
-			String xmlFileName = FileUtil.getRandomFileName(".xml");
-			try {
-				
-				xmlPath = RedditTransformer.submissionsToXMLFile(firstPage, xmlFileName, itag);
-				
-				SolrAPIWrapper wrapper = null;
-				if(host == null)
-					wrapper = new SolrAPIWrapper();
-				else {
-					wrapper = new SolrAPIWrapper(host);
-				}
-				wrapper.otcaBatchUpdate(new File(xmlPath));	
-			} catch (IOException e) {
-				log.error(e.getMessage());
+			solrBatchUpdate(itag, firstPage);			
+		}
+	}
+
+	/**
+	 * Read the submissions included in a Reddit thread
+	 * @param subreddit - Reddit thread name
+	 * @return List of submissions in the first page (100 submissions)
+	 * @see https://mattbdean.gitbooks.io/jraw/quickstart.html
+	 * @see https://github.com/mattbdean/JRAW/blob/master/exampleScript/src/main/java/net/dean/jraw/example/script/ScriptExample.java
+	 */
+	private Listing<Submission> readSubreddit(String subreddit) {
+		// "Navigate" to the Subreddit
+		SubredditReference sr = reddit.subreddit(subreddit);
+
+		// Browse through the top posts of the last month, requesting as much data as possible per request
+		Builder<Submission, SubredditSort> builder = sr.posts();
+
+		builder.limit(Paginator.RECOMMENDED_MAX_LIMIT)
+		.sorting(SubredditSort.TOP)
+		.timePeriod(TimePeriod.MONTH)
+		.build();
+
+		DefaultPaginator<Submission> paginator = builder.build();
+		// Request the first page
+		Listing<Submission> firstPage = paginator.next();
+		
+		log.debug("# submissions: " + firstPage.size());
+		
+		return firstPage;
+	}
+
+	/**
+	 * Call to the /solr/interaction/otcaBatchUpdate 
+	 * method provided by Solr in order to insert new content
+	 * @param rtag - Reddit Importer tag (used to filter content in Explore)
+	 * @param firstPage - List of the latest submissions published in Reddit 
+	 */
+	private void solrBatchUpdate(String rtag, Listing<Submission> firstPage) {
+		String xmlPath = null;
+		String xmlFileName = FileUtil.getRandomFileName(".xml");
+		try {
+			
+			xmlPath = RedditTransformer.submissionsToXMLFile(firstPage, xmlFileName, rtag);
+			
+			SolrAPIWrapper wrapper = null;
+			if(host == null)
+				wrapper = new SolrAPIWrapper();
+			else {
+				wrapper = new SolrAPIWrapper(host);
 			}
-			finally {
-				if(xmlPath != null) {
-					FileUtil.deleteFile(xmlPath);	
-				}
-				
-			}			
-			
-			//for (Submission post : firstPage) {				
-			//	System.out.println(String.format("%s (/r/%s, %s points) - %s",
-			//			post.getTitle(), post.getSubreddit(), post.getScore(), post.getUrl()));
-			//}
+			wrapper.otcaBatchUpdate(new File(xmlPath));	
+		} catch (IOException e) {
+			log.error(e.getMessage());
+		}
+		finally {
+			if(xmlPath != null) {
+				FileUtil.deleteFile(xmlPath);	
+			}
 		}
 	}
 }
