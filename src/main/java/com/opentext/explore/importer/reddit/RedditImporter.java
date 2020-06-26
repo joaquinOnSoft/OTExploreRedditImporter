@@ -75,21 +75,24 @@ public class RedditImporter {
 
 	/**
 	 * 
-	 * @param subreddit
+	 * @param subreddit Reddit's thread name
+	 * @param rtag - Reddit Importer tag
+	 * @param timeInSeconds - Seconds between each call against Reddit API
 	 * @see https://mattbdean.gitbooks.io/jraw/basics.html
 	 * @see https://github.com/mattbdean/JRAW/blob/master/exampleScript/src/main/java/net/dean/jraw/example/script/ScriptExample.java
 	 */
-	public void start(String subreddit, String itag, int pool) {
+	public void start(String subreddit, String rtag, int timeInSeconds) {
 		if(reddit != null) {
 			do {
 				Listing<Submission> firstPage = readSubreddit(subreddit);
 	
 				if (firstPage != null && firstPage.size() > 0) {
-					solrBatchUpdate(itag, firstPage);					
+					solrBatchUpdate(rtag, firstPage);					
 				}
 				
 				try {
-					Thread.sleep(30 * MILISECONDS_IN_SECOND);
+					log.debug("Sleeping " + timeInSeconds +  " seconds: ZZZZZZZ!");
+					Thread.sleep(timeInSeconds * MILISECONDS_IN_SECOND);
 				} catch (InterruptedException e) {
 					log.warn(e.getMessage());
 					System.exit(-1);
@@ -105,7 +108,7 @@ public class RedditImporter {
 	 * @see https://mattbdean.gitbooks.io/jraw/quickstart.html
 	 * @see https://github.com/mattbdean/JRAW/blob/master/exampleScript/src/main/java/net/dean/jraw/example/script/ScriptExample.java
 	 */
-	private Listing<Submission> readSubreddit(String subreddit) {
+	protected Listing<Submission> readSubreddit(String subreddit) {
 		// "Navigate" to the Subreddit
 		SubredditReference sr = reddit.subreddit(subreddit);
 
@@ -130,9 +133,12 @@ public class RedditImporter {
 	 * Call to the /solr/interaction/otcaBatchUpdate 
 	 * method provided by Solr in order to insert new content
 	 * @param rtag - Reddit Importer tag (used to filter content in Explore)
-	 * @param firstPage - List of the latest submissions published in Reddit 
+	 * @param firstPage - List of the latest submissions published in Reddit
+	 * @return true if the insertion in Solr was ok, false in other case. 
 	 */
-	private void solrBatchUpdate(String rtag, Listing<Submission> firstPage) {
+	protected boolean solrBatchUpdate(String rtag, Listing<Submission> firstPage) {
+		boolean updated = true;
+		
 		String xmlPath = null;
 		String xmlFileName = FileUtil.getRandomFileName(".xml");
 		try {
@@ -148,11 +154,14 @@ public class RedditImporter {
 			wrapper.otcaBatchUpdate(new File(xmlPath));	
 		} catch (IOException e) {
 			log.error(e.getMessage());
+			updated = false;
 		}
 		finally {
 			if(xmlPath != null) {
 				FileUtil.deleteFile(xmlPath);	
 			}
 		}
+		
+		return updated;
 	}
 }

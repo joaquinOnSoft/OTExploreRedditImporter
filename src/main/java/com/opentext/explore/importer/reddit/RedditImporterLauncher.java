@@ -17,6 +17,11 @@ import org.apache.logging.log4j.Logger;
  */
 public class RedditImporterLauncher {
 	
+	private static final String DEFAULT_REDDIT_THREAD_NAME = "CanadaPost";
+	private static final String DEFAULT_SOLR_URL = "http://localhost:8983";
+	private static final String DEFAULT_REDDIT_IMPORT_TAG = "Reddit";
+	private static final int DEFAULT_POOLING_TIME_IN_SECONDS = 60;
+	
 	private static final Logger log = LogManager.getLogger(RedditImporterLauncher.class);
 
 	public static void main(String[] args) {		
@@ -32,8 +37,8 @@ public class RedditImporterLauncher {
 		threadOption.setRequired(true);
 		options.addOption(threadOption);
 		
-		Option poolOption = new Option("p", "pool", true, "Seconds between each call against Reddit API");
-		options.addOption(poolOption);		
+		Option timeOption = new Option("t", "time", true, "Seconds between each call against Reddit API. Default value 60 secs");
+		options.addOption(timeOption);		
 		
 		CommandLineParser parser = new DefaultParser();
 		HelpFormatter formatter = new HelpFormatter();
@@ -42,11 +47,10 @@ public class RedditImporterLauncher {
 		try {
 			cmd = parser.parse(options, args);
 
-			String rtag = "Reddit";
-			String host = "http://localhost:8983";
-			String subreddit = "CanadaPost";
-			int pool = 30;
-			
+			String rtag = DEFAULT_REDDIT_IMPORT_TAG;
+			String host = DEFAULT_SOLR_URL;
+			String subreddit = DEFAULT_REDDIT_THREAD_NAME;
+			int timeInSeconds = DEFAULT_POOLING_TIME_IN_SECONDS;
 			
 			if (cmd.hasOption("rtag") || cmd.hasOption("r")) {
 				rtag = cmd.getOptionValue("rtag");
@@ -60,10 +64,10 @@ public class RedditImporterLauncher {
 				subreddit = cmd.getOptionValue("subreddit");
 			}
 		
-			if (cmd.hasOption("pool") || cmd.hasOption("p")) {
-				String strPool = cmd.getOptionValue("pool");
+			if (cmd.hasOption("time") || cmd.hasOption("t")) {
+				String strTimeInSeconds = cmd.getOptionValue("time");
 				try {
-					pool = Integer.parseInt(strPool);
+					timeInSeconds = Integer.parseInt(strTimeInSeconds);
 				}
 				catch(NumberFormatException e) {
 					formatter.printHelp("java -jar OTExploreRedditImporter.20.2.jar --rtag \"Reddit Canada Post\" --subreddit CanadaPost", options);
@@ -73,7 +77,7 @@ public class RedditImporterLauncher {
 			}
 					
 			RedditImporter importer = new RedditImporter(host);
-			importer.start(subreddit, rtag, pool);
+			importer.start(subreddit, rtag, timeInSeconds);
 			
 		}
 		catch (ParseException e) {
