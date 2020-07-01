@@ -16,7 +16,7 @@ This utility is distributed as a runnable .jar file.
 
 These are the accepted parameters:
 
-usage: java -jar OTExploreRedditImporter-20.2.jar
+usage: java -jar OTExploreRedditImporter-20.3.jar
  * -h, --host			(Optional)		Solr host URL (used by OpenText Explore). Default value: http://localhost:8983
  * -i, --itag			(Optional)		Explore Importer tag. Added to each article importer. Default value: "Reddit"
  * -s, --subreddit		(Mandatory)		Subreddit thread name 
