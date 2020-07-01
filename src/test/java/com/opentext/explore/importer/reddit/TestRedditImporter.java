@@ -3,20 +3,27 @@ package com.opentext.explore.importer.reddit;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
+import net.dean.jraw.models.TimePeriod;
+import net.dean.jraw.pagination.DefaultPaginator;
 
-public class TestRedditImporter  extends TestCase {
+public class TestRedditImporter extends TestCase {
 
 	@Test
-	public void testStart() {
+	public void testCreateMonthlyPaginator() {
 		RedditImporter redditImp = new RedditImporter("http://localhost:8983");
-		Listing<Submission> firstPage = redditImp.readSubreddit("CanadaPost");
+		DefaultPaginator<Submission> paginator = redditImp.createMonthlyPaginator("CanadaPost");
 		
-		assertNotNull(firstPage);
-		assertEquals(100, firstPage.size());
-				
-		boolean result = redditImp.solrBatchUpdate("Reddit Canada Post", firstPage);
-		assertTrue(result);
-	}
+		assertNotNull(paginator);
+		assertTrue(TimePeriod.MONTH == paginator.getTimePeriod());
+	}	
+
+	@Test
+	public void testCreateHourlyPaginator() {
+		RedditImporter redditImp = new RedditImporter("http://localhost:8983");
+		DefaultPaginator<Submission> paginator = redditImp.createHourlyPaginator("CanadaPost");
+		
+		assertNotNull(paginator);
+		assertTrue(TimePeriod.HOUR == paginator.getTimePeriod());
+	}		
 }

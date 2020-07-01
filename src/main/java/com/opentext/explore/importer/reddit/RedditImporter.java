@@ -2,6 +2,7 @@ package com.opentext.explore.importer.reddit;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -86,12 +87,34 @@ public class RedditImporter {
 	 * @see https://github.com/mattbdean/JRAW/blob/master/exampleScript/src/main/java/net/dean/jraw/example/script/ScriptExample.java
 	 */
 	public void start(String subreddit, String rtag, int timeInSeconds) {
+		boolean firstTime = true;
+		
 		if(reddit != null) {
+			int nPage = 0;
+			DefaultPaginator<Submission> paginator = null;
+			
 			do {
-				Listing<Submission> firstPage = readSubreddit(subreddit);
-	
-				if (firstPage != null && firstPage.size() > 0) {
-					solrBatchUpdate(rtag, firstPage);					
+				nPage = 0;
+						
+				if(firstTime) {
+					log.debug("Monthly pagination");
+					paginator = createMonthlyPaginator(subreddit);
+					firstTime = false;
+				}
+				else {
+					log.debug("Hourly pagination");
+					paginator = createHourlyPaginator(subreddit);
+				}
+				
+				Iterator<Listing<Submission>> it = paginator.iterator();
+
+				while (it.hasNext()) {
+				    Listing<Submission> nextPage = it.next();
+				    
+				    if (nextPage != null && nextPage.size() > 0) {
+						log.debug("Processing page " + nPage++);
+						solrBatchUpdate(rtag, nextPage);					
+					}
 				}
 				
 				try {
@@ -105,14 +128,18 @@ public class RedditImporter {
 		}
 	}
 
+	
 	/**
-	 * Read the submissions included in a Reddit thread
+	 * The reddit API handles pagination through the Listing structure. 
+	 * Each Listing holds the data from one page and the ID of the 
+	 * model that is next in the list.
 	 * @param subreddit - Reddit thread name
-	 * @return List of submissions in the first page (100 submissions)
+	 * @return Reddit's paginator
 	 * @see https://mattbdean.gitbooks.io/jraw/quickstart.html
+	 * @see https://mattbdean.gitbooks.io/jraw/pagination.html
 	 * @see https://github.com/mattbdean/JRAW/blob/master/exampleScript/src/main/java/net/dean/jraw/example/script/ScriptExample.java
 	 */
-	protected Listing<Submission> readSubreddit(String subreddit) {
+	private DefaultPaginator<Submission> createPaginator(String subreddit, TimePeriod timePeriod){
 		// "Navigate" to the Subreddit
 		SubredditReference sr = reddit.subreddit(subreddit);
 
@@ -121,18 +148,22 @@ public class RedditImporter {
 
 		builder.limit(Paginator.RECOMMENDED_MAX_LIMIT)
 		.sorting(SubredditSort.TOP)
-		.timePeriod(TimePeriod.MONTH)
+		.timePeriod(timePeriod)
 		.build();
 
 		DefaultPaginator<Submission> paginator = builder.build();
-		// Request the first page
-		Listing<Submission> firstPage = paginator.next();
 		
-		log.debug("# submissions: " + firstPage.size());
-		
-		return firstPage;
+		return paginator;
+	}
+	
+	protected DefaultPaginator<Submission> createMonthlyPaginator(String subreddit){
+		return createPaginator(subreddit, TimePeriod.MONTH);
 	}
 
+	protected DefaultPaginator<Submission> createHourlyPaginator(String subreddit){
+		return createPaginator(subreddit, TimePeriod.HOUR);
+	}	
+	
 	/**
 	 * Call to the /solr/interaction/otcaBatchUpdate 
 	 * method provided by Solr in order to insert new content

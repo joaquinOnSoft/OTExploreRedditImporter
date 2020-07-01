@@ -82,9 +82,7 @@ public class TestRedditTransformer extends TestCase {
 	@Test 
 	public void testStatusToXMLFile() {
 		String outputXML = "test_h10u12.xml";
-		
-
-		
+				
 		try {
 			RedditTransformer.submissionsToXMLFile(posts, outputXML, "Canada Post");
 		} catch (IOException e) {
