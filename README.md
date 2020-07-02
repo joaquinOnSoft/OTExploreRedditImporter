@@ -26,11 +26,11 @@ usage: java -jar OTExploreRedditImporter-20.3.jar
 ### Example of invocation
 
 ```
-$ java -jar OTExploreRedditImporter-20.2.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" 
+$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" 
 
-$ java -jar OTExploreRedditImporter-20.2.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" --host http://localhost:8983 
+$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" --host http://localhost:8983 
 
-$ java -jar OTExploreRedditImporter-20.2.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" --host http://localhost:8983 --time 300
+$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" --host http://localhost:8983 --time 300
 ```
 
 
@@ -363,3 +363,7 @@ d:\SolrCloud\solr-7.3.1\example\exampledocs> java -Dc=interaction -Ddata=args -D
 ### 20.2 (June 26th, 2020)
 
 * Initial version
+
+### 20.3 (June 30th, 2020)
+
+* Fix pagination bug
