@@ -1,4 +1,4 @@
-# OTExploreRedditImporter
+w<# OTExploreRedditImporter
 Reddit importer for OpenText Explore (Voice of the customer solution)
 This command-line application pool Reddit thread periodically, to ingest the Submissions (Article/Post) of our interest. 
 
@@ -26,11 +26,11 @@ usage: java -jar OTExploreRedditImporter-20.3.jar
 ### Example of invocation
 
 ```
-$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" 
+$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Post" 
 
-$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" --host http://localhost:8983 
+$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Post" --host http://localhost:8983 
 
-$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Pos" --host http://localhost:8983 --time 300
+$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Post" --host http://localhost:8983 --time 300
 ```
 
 
