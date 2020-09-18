@@ -1,4 +1,4 @@
-w<# OTExploreRedditImporter
+# OTExploreRedditImporter
 Reddit importer for OpenText Explore (Voice of the customer solution)
 This command-line application pool Reddit thread periodically, to ingest the Submissions (Article/Post) of our interest. 
 
@@ -364,7 +364,6 @@ d:\SolrCloud\solr-7.3.1\example\exampledocs> java -Dc=interaction -Ddata=args -D
 
 * Initial version
 
-<<<<<<< HEAD
 ### 20.3 (July 1st, 2020)
 
 * Fix pagination bug
@@ -372,8 +371,4 @@ d:\SolrCloud\solr-7.3.1\example\exampledocs> java -Dc=interaction -Ddata=args -D
 ### 20.4 (September 18th, 2020)
 
 * Ignore unicode characters in Reddit messages
-=======
-### 20.3 (June 30th, 2020)
 
-* Fix pagination bug
->>>>>>> 67a9194be0b2bf5446b9d96425c6e4f6522c354e
