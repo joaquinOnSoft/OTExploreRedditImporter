@@ -38,8 +38,8 @@ public abstract class AbstractTransformer {
 		// The data "How can I intern without hurting my family?" 
 		// is not legal for a JDOM CDATA section: 0x0010 is not a legal 
 		// XML character.
+		elementField.addContent(new CDATA(ignoreUnicodeGarbage(content)));
 
-		elementField.addContent(new CDATA(content));
 		return elementField;
 	}
 	
@@ -49,4 +49,8 @@ public abstract class AbstractTransformer {
 		elementField.addContent(content);
 		return elementField;
 	}	
+	
+	private static String ignoreUnicodeGarbage(String str) {
+		return str.replace("", "");
+	}
 }

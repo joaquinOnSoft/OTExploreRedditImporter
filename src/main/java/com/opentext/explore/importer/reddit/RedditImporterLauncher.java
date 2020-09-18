@@ -81,7 +81,7 @@ public class RedditImporterLauncher {
 			
 		}
 		catch (ParseException e) {
-			formatter.printHelp("java -jar OTExploreRedditImporter.20.2.jar --rtag \"Reddit Canada Post\" --subreddit CanadaPost", options);
+			formatter.printHelp("java -jar OTExploreRedditImporter.20.4.jar --rtag \"Reddit Canada Post\" --subreddit CanadaPost", options);
 
 			exitInError(e);	
 		}

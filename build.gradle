@@ -3,7 +3,7 @@ apply plugin: 'eclipse'
 apply plugin: 'application'
 
 java {
-	version = '20.3' 
+	version = '20.4' 
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
 }
@@ -35,7 +35,9 @@ dependencies {
 	implementation 'org.jdom:jdom:2.0.0'
 
 	// https://mvnrepository.com/artifact/commons-cli/commons-cli
-	implementation 'commons-cli:commons-cli:1.4' 
+	implementation 'commons-cli:commons-cli:1.4'
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	implementation 'org.apache.commons:commons-lang3:3.11'
 	
 	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore
 	implementation 'org.apache.httpcomponents:httpcore:4.4.13'	
