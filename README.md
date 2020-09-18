@@ -363,3 +363,11 @@ d:\SolrCloud\solr-7.3.1\example\exampledocs> java -Dc=interaction -Ddata=args -D
 ### 20.2 (June 26th, 2020)
 
 * Initial version
+
+### 20.3 (July 1st, 2020)
+
+* Fix pagination bug
+
+### 20.4 (September 18th, 2020)
+
+* Ignore unicode characters in Reddit messages
