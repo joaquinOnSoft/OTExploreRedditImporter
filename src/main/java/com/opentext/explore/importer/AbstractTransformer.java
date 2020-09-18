@@ -33,7 +33,13 @@ public abstract class AbstractTransformer {
 	protected static Element createElementField(String name, String content) {
 		Element elementField = new Element("field");
 		elementField.setAttribute("name", name);
-		elementField.addContent(content);
+		
+		// Exception in thread "main" org.jdom2.IllegalDataException: 
+		// The data "How can I intern without hurting my family?" 
+		// is not legal for a JDOM CDATA section: 0x0010 is not a legal 
+		// XML character.
+
+		elementField.addContent(new CDATA(content));
 		return elementField;
 	}
 	
