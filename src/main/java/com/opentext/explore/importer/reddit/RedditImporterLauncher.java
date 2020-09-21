@@ -1,5 +1,8 @@
 package com.opentext.explore.importer.reddit;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -36,6 +39,9 @@ public class RedditImporterLauncher {
 		Option threadOption = new Option("s", "subreddit", true, "Subreddit thread name");
 		threadOption.setRequired(true);
 		options.addOption(threadOption);
+
+		Option filterOption = new Option("f", "filter", true, "Filter subreddit messages (Must contains some of the words separated by commas)");
+		options.addOption(filterOption);		
 		
 		Option timeOption = new Option("t", "time", true, "Seconds between each call against Reddit API. Default value 60 secs");
 		options.addOption(timeOption);		
@@ -50,6 +56,8 @@ public class RedditImporterLauncher {
 			String rtag = DEFAULT_REDDIT_IMPORT_TAG;
 			String host = DEFAULT_SOLR_URL;
 			String subreddit = DEFAULT_REDDIT_THREAD_NAME;
+			List <String> filters = null;
+			
 			int timeInSeconds = DEFAULT_POOLING_TIME_IN_SECONDS;
 			
 			if (cmd.hasOption("rtag") || cmd.hasOption("r")) {
@@ -63,21 +71,27 @@ public class RedditImporterLauncher {
 			if (cmd.hasOption("subreddit") || cmd.hasOption("s")) {
 				subreddit = cmd.getOptionValue("subreddit");
 			}
-		
+
+			if (cmd.hasOption("filter") || cmd.hasOption("f")) {
+				String strFilter = cmd.getOptionValue("filter");
+				String[] arrayFilter = strFilter.split(",");
+				filters = Arrays.asList(arrayFilter);
+			}			
+			
 			if (cmd.hasOption("time") || cmd.hasOption("t")) {
 				String strTimeInSeconds = cmd.getOptionValue("time");
 				try {
 					timeInSeconds = Integer.parseInt(strTimeInSeconds);
 				}
 				catch(NumberFormatException e) {
-					formatter.printHelp("java -jar OTExploreRedditImporter.20.2.jar --rtag \"Reddit Canada Post\" --subreddit CanadaPost", options);
+					formatter.printHelp("java -jar OTExploreRedditImporter.20.2.4.jar --rtag \"Reddit Canada Post\" --subreddit CanadaPost", options);
 
 					exitInError(e);
 				}
 			}
 					
 			RedditImporter importer = new RedditImporter(host);
-			importer.start(subreddit, rtag, timeInSeconds);
+			importer.start(subreddit, filters, rtag, timeInSeconds);
 			
 		}
 		catch (ParseException e) {

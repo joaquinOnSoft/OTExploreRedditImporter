@@ -19,7 +19,8 @@ These are the accepted parameters:
 usage: java -jar OTExploreRedditImporter-20.3.jar
  * -h, --host			(Optional)		Solr host URL (used by OpenText Explore). Default value: http://localhost:8983
  * -i, --itag			(Optional)		Explore Importer tag. Added to each article importer. Default value: "Reddit"
- * -s, --subreddit		(Mandatory)		Subreddit thread name 
+ * -s, --subreddit		(Mandatory)		Subreddit thread name  
+ * -f, --filter			(Optional)		Filter subreddit messages (Must contains some of the words separated by commas)
  * -t, --time			(Optional)		Seconds between each call against Reddit API. Default value 60 seconds 
 
 
@@ -31,6 +32,8 @@ $ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Redd
 $ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Post" --host http://localhost:8983 
 
 $ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Post" --host http://localhost:8983 --time 300
+
+$ java -jar OTExploreRedditImporter-20.3.jar --subreddit personafinance --rtag "Persona finance" --filter="Vanguard,Chase"
 ```
 
 

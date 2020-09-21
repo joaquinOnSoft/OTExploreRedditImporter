@@ -3,6 +3,8 @@ package com.opentext.explore.importer.reddit;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.logging.log4j.LogManager;
@@ -86,7 +88,7 @@ public class RedditImporter {
 	 * @see https://mattbdean.gitbooks.io/jraw/basics.html
 	 * @see https://github.com/mattbdean/JRAW/blob/master/exampleScript/src/main/java/net/dean/jraw/example/script/ScriptExample.java
 	 */
-	public void start(String subreddit, String rtag, int timeInSeconds) {
+	public void start(String subreddit, List<String> filters, String rtag, int timeInSeconds) {
 		boolean firstTime = true;
 		
 		if(reddit != null) {
@@ -111,6 +113,11 @@ public class RedditImporter {
 				while (it.hasNext()) {
 				    Listing<Submission> nextPage = it.next();
 				    
+				    //
+					if(filters != null && filters.size() > 0) {
+						applyFilters(nextPage, filters);
+					}
+				    
 				    if (nextPage != null && nextPage.size() > 0) {
 						log.debug("Processing page " + nPage++);
 						solrBatchUpdate(rtag, nextPage);					
@@ -125,6 +132,36 @@ public class RedditImporter {
 					System.exit(-1);
 				}
 			}while(true);
+		}
+	}
+
+	private void applyFilters(Listing<Submission> nextPage, List<String> filters) {
+		List<Integer> indexToRemove = new LinkedList<Integer>();
+		
+		String title = null;
+		String body = null;
+		boolean containsFilter = false;
+		int size = nextPage.size();
+		
+		for(int i=0; i< size; i++){
+			title = nextPage.get(i).getTitle();
+			body = nextPage.get(i).getBody();
+			
+			for (String filter : filters) {
+				if (title.indexOf(filter) > 0 || body.indexOf(filter) > 0) {
+					containsFilter = true;
+				}
+			}
+			
+			if(containsFilter == false) {
+				indexToRemove.add(i);
+			}
+		}
+		
+		int sizeToRemove = indexToRemove.size();
+		for(int j= (sizeToRemove - 1); j>=0; j--) {
+			log.debug("Removing message, due to filter, with index: " + indexToRemove.get(j));
+			nextPage.remove(indexToRemove.get(j));
 		}
 	}
 
