@@ -113,11 +113,13 @@ public class RedditImporter {
 				while (it.hasNext()) {
 				    Listing<Submission> nextPage = it.next();
 				    
-				    //
+					log.debug("# messages in page: " + nextPage.size());
 					if(filters != null && filters.size() > 0) {
-						applyFilters(nextPage, filters);
+						nextPage = applyFilters(nextPage, filters);
+						log.debug("# messages in page (after filter): " + nextPage.size());
 					}
 				    
+					
 				    if (nextPage != null && nextPage.size() > 0) {
 						log.debug("Processing page " + nPage++);
 						solrBatchUpdate(rtag, nextPage);					
@@ -135,34 +137,42 @@ public class RedditImporter {
 		}
 	}
 
-	private void applyFilters(Listing<Submission> nextPage, List<String> filters) {
+	private Listing<Submission> applyFilters(Listing<Submission> nextPage, List<String> filters) {
+		log.debug("Applying filters: " + filters);
+		
 		List<Integer> indexToRemove = new LinkedList<Integer>();
 		
 		String title = null;
-		String body = null;
+		String selfText = null;
 		boolean containsFilter = false;
 		int size = nextPage.size();
 		
 		for(int i=0; i< size; i++){
 			title = nextPage.get(i).getTitle();
-			body = nextPage.get(i).getBody();
+			selfText = nextPage.get(i).getSelfText();
 			
-			for (String filter : filters) {
-				if (title.indexOf(filter) > 0 || body.indexOf(filter) > 0) {
-					containsFilter = true;
-				}
+			if(title != null && selfText != null) {
+				for (String filter : filters) {
+					if (title.indexOf(filter) > 0 || selfText.indexOf(filter) > 0) {
+						containsFilter = true;
+						log.debug("Message " + i + " filtered due to filter: " + filter);
+					}
+				}				
 			}
 			
 			if(containsFilter == false) {
 				indexToRemove.add(i);
 			}
+			containsFilter = false;
 		}
 		
 		int sizeToRemove = indexToRemove.size();
 		for(int j= (sizeToRemove - 1); j>=0; j--) {
 			log.debug("Removing message, due to filter, with index: " + indexToRemove.get(j));
-			nextPage.remove(indexToRemove.get(j));
+			nextPage.remove(nextPage.get(indexToRemove.get(j)));
 		}
+		
+		return nextPage;
 	}
 
 	
