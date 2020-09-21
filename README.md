@@ -16,7 +16,7 @@ This utility is distributed as a runnable .jar file.
 
 These are the accepted parameters:
 
-usage: java -jar OTExploreRedditImporter-20.3.jar
+usage: java -jar OTExploreRedditImporter-20.4.2.jar
  * -h, --host			(Optional)		Solr host URL (used by OpenText Explore). Default value: http://localhost:8983
  * -i, --itag			(Optional)		Explore Importer tag. Added to each article importer. Default value: "Reddit"
  * -s, --subreddit		(Mandatory)		Subreddit thread name  
@@ -27,13 +27,13 @@ usage: java -jar OTExploreRedditImporter-20.3.jar
 ### Example of invocation
 
 ```
-$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Post" 
+$ java -jar OTExploreRedditImporter-20.4.2.jar --subreddit CanadaPost --rtag "Reddit Canada Post" 
 
-$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Post" --host http://localhost:8983 
+$ java -jar OTExploreRedditImporter-20.4.2.jar --subreddit CanadaPost --rtag "Reddit Canada Post" --host http://localhost:8983 
 
-$ java -jar OTExploreRedditImporter-20.3.jar --subreddit CanadaPost --rtag "Reddit Canada Post" --host http://localhost:8983 --time 300
+$ java -jar OTExploreRedditImporter-20.4.2.jar --subreddit CanadaPost --rtag "Reddit Canada Post" --host http://localhost:8983 --time 300
 
-$ java -jar OTExploreRedditImporter-20.3.jar --subreddit personafinance --rtag "Persona finance" --filter="Vanguard,Chase"
+$ java -jar OTExploreRedditImporter-20.4.2.jar --subreddit personafinance --rtag "Persona finance" --filter="Vanguard,Chase"
 ```
 
 
@@ -375,3 +375,6 @@ d:\SolrCloud\solr-7.3.1\example\exampledocs> java -Dc=interaction -Ddata=args -D
 
 * Ignore unicode characters in Reddit messages
 
+### 20.4.2 (September 21st, 2020)
+
+* Added 
